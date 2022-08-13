@@ -1,35 +1,37 @@
-# Vue和React快捷集成的工具包，并且适合复杂的集成场景 
+# VueやReactとの迅速・複雑な統合シナリオに対応するためのツールキット
 <div align=center>
   <img src="https://raw.githubusercontent.com/devilwjp/VueReact/master/vuereact-combined.png"/>
 </div>  
 
 <div align=center>
   <p>
-  <h4>可以在任何的Vue和React项目中使用另一个类型框架的组件，并且解决了复杂的集成问题 </h4>
+  <h4>Vue・Reactで作成されたコンポーネントをVue・Reactのプロジェクトで使用 </h4>
   <p>
 </div>  
 
-## 支持Vue3?
-Vue3和React的共同开发场景请使用[Veaury](https://github.com/devilwjp/veaury)
+## Vue3対応してる?
+Vue3とReactを使う場合は、以下[Veaury](https://github.com/devilwjp/veaury)
 
-## 安装  
+## インストール  
 ````  
 npm i vuereact-combined -S
 ````  
 
 ## Why?  
-#### 让vue和react的同学们一起来完成同一个项目同一个页面甚至同一个组件  
-+ 使项目的人员选择性和机动性变得更强，vue和react的技术栈都可以加入项目  
-+ 使项目的第三方插件选择性更强，vue和react的插件都可以通用  
-+ 使研发人员的技术交流性更强，研发人员不应该被技术栈所限制  
-+ 使项目可以集成更多的业务代码，其他vue和react项目的优秀代码可以快速引入  
-+ 使前端研发人员可以更好的学习vue和react，了解两者的精华，促进团队在前端技术栈的广度  
-+ 使用方式极其简便  
+#### vueとreactを同プロジェクト・同ページ・同コンポーネントで扱うことができる  
++ vueとreactの両方の技術スタックを使用可能にし、よりモバイル性の高いプロジェクトにする  
++ サードパーティプラグインの使用を選択でき、vueとreactの両方のプラグインを共通化する  
++ 技術スタックに制限されることなく、開発者間の技術的なコミュニケーションを促進することができる  
++ 他のvueやreactプロジェクトから優れたコードを迅速に取り込むことができるようにする  
++ vueとreact、両者の本質を理解できるようにし、チームのフロントエンド技術スタックの幅を広げることを促進する  
++ 非常に使いやすい  
 ## Benchmark
-非常感谢vuera的存在，开辟了Vue和React融合的想法，但是vuera只能解决非常基础的组件融合，并且存在插槽(children)和数据变更后的渲染性能问题，因此无法用于复杂的场景以及生产环境  
-vuereact-combined将融合做到了极致，支持了大部分的Vue和React组件的功能，并且在渲染更新上使用了和vuera不同的思路，完美解决了渲染性能问题  
+VueとReactを融合するアイデアはvueraのおかげである。
+しかし、vueraは非常に基本的なコンポーネントの融合しか解決できていなかった。
+slot（子）やデータ変更時のレンダリングパフォーマンスに問題があり、複雑なシナリオや本番環境では使用できなかった。
+vuereact-combinedは融合を極限まで進め、VueとReactコンポーネントのほとんどの機能をサポートし、vueraとは異なるアプローチでレンダリングの更新を行い、レンダリング性能の問題を完璧に解決している。
 
-场景/功能 | vuereact-combined | vuera |  
+シーン／機能 | vuereact-combined | vuera |  
 | --------- | --------- | --------- |
 normal prop (vue / react) | ✔ | ✔ |  
 event (vue / react) | ✔ | ✔ |  
@@ -43,18 +45,18 @@ v-model (vue) | ✔ |  |
 sync (vue) | ✔ |  |  
 render props (react) | ✔ |  |  
 node props (react) | ✔ |  |  
-enter & leave 事件委托传递 (react) | ✔ |  |  
-slots & children & node在父组件数据变更后的生命周期表现 | 触发更新 | 每次都触发创建和销毁 |  
+enter & leave イベント委譲 (react) | ✔ |  |  
+slots & children & 親コンポーネントのデータ変更後のnodeのライフサイクル動作 | トリガーアップデート | 作成と破棄を毎回トリガーする |  
 vuex in react | ✔ |  |  
 vue-router in react | ✔ |  |  
 redux in vue | ✔ |  |  
 react-router in react | ✔ |  |  
 lazyReactInVue | ✔ |  |  
 lazyVueInReact | ✔ |  |  
-第三方组件跨框架使用（比如antd、element） | 支持所有第三方组件 | 基本不支持 |  
-自定义融合包囊层的dom attr | ✔ |  |    
+フレームワーク間で使用されるサードパーティコンポーネント（例：antd、element） | 全てのサードパーティ製コンポーネントをサポート | 基本的にサポート外 |  
+融合レイヤーでのdom attrのカスタマイズ | ✔ |  |    
 
-## 只是高阶组件  
+## HOC(高階コンポーネント)の場合（HOC： あるコンポーネントを受け取って新規のコンポーネントを返すような関数） 
 ````vue
 <!--Vue File-->
 <template>
@@ -72,7 +74,7 @@ import { Button } from 'element-ui'
 
 export default {
   components: {
-    // 使用applyReactInVue高阶组件将antd Popover转换成Vue组件
+    // applyReactInVue（HOC）を使用しantd PopoverをVueコンポーネントに変換
     Popover: applyReactInVue(Popover),
     Button,
   },
@@ -90,39 +92,39 @@ import React, { useState } from 'react'
 import { DatePicker } from 'element-ui'
 import { applyVueInReact } from 'vuereact-combined'
 
-// 使用applyVueInReact高阶组件讲element-ui DatePicker转换成React组件
+// applyVueInReact（HOC）を使用し、elementUIのDatePickerをReactコンポーネントに変換
 const ElDatePicker = applyVueInReact(DatePicker)
 export default function() {
   const [timeValue, setTimeValue] = useState(Date.now())
   return <ElDatePicker
-    {/* Vue组件的v-model在React中的用法 */}
+    {/* ReactにおけるVueコンポーネントのv-modelの使用法 */}
     $model={{
         value: timeValue,
         setter: (val) => { setTimeValue(val) },
     }}
     type="date"
-    placeholder="选择日期"/>
+    placeholder="日付を選択"/>
 }
 
 ````
-## 使用场景
-最基本的，项目中至少应该存在`vue@^2.6`、`react@^16.3`、`react-dom@^16.3`  
-### Vue项目中使用第三方的React组件  
-第三方的react组件已经是通过`babel`进行过处理，不包含React的`jsx`  
-此情况下，可以直接在项目中使用applyReactInVue对第三方的React组件进行处理  
-### React项目中使用第三方的Vue组件  
-第三方的Vue组件已经是通过`vue-loader`和`babel`进行过处理，不包含`.vue`文件以及Vue的`jsx`  
-此情况下，可以直接在项目中使用applyVueInReact对第三方的Vue组件进行处理  
-### 复杂情况(项目中同时安装和配置react和vue的相关环境)  
-此情况可以在一个项目中同时开发编写React和Vue的组件代码，由于需要同时具备两种技术栈所依赖的环境，因此需要对项目的构建（一般是`webpack`的配置）和`babel.config.js`进行一些配置上的修改  
-可以参考以下案例  
-+ 如果是通过vue-cli3创建的项目  
-请参考 https://github.com/devilwjp/vuereact-for-vuecli3-demo
-+ 如果通过react-create-app创建的项目（react版本需要>=16.3）  
-请参考 https://github.com/devilwjp/vuereact-for-cra-demo  
+## 利用シーン
+最も基本的なレベルでは、少なくとも `vue@^2.6`, `react@^16.3`, `react-dom@^16.3` がプロジェクトに存在する必要があります。  
+### サードパーティのReactコンポーネントをVueのプロジェクトで使用する  
+サードパーティのreactコンポーネントは、すでに `babel` で処理されており、Reactの `jsx` は含まれていません。 
+そのため、applyReactInVueを使用して、サードパーティ製のReactコンポーネントをプロジェクト内で直接処理することができます。
+### ReactプロジェクトでサードパーティのVueコンポーネントを使用する。  
+Reactの場合と同じく、サードパーティのVueコンポーネントは、すでに `vue-loader` と `babel` で処理されていて、 `.vue` ファイルやVueの `jsx` は含まれていません。 
+そのため、サードパーティのVueコンポーネントは、applyVueInReactを使用してプロジェクト内で直接処理することができます。  
+### 複雑なケース（プロジェクトにreactとvueの両方の環境がインストールされ、設定されている場合） 
+この場合、ReactとVueの両方のコンポーネントコードを単一のプロジェクトで開発・記述できます。 両方の技術スタックが依存する環境を用意する必要があるため、プロジェクトのビルド（通常は `webpack`）と `babel.config.js` の設定をいくつか変更する必要があります。 
+以下の例を参考にしてください。   
++ プロジェクトが vue-cli3 で作成された場合  
+https://github.com/devilwjp/vuereact-for-vuecli3-demo
++ react-create-appでプロジェクトを作成した場合(reactのバージョンは16.3以上である必要あり) 
+https://github.com/devilwjp/vuereact-for-cra-demo  
   
-## 属性传递  
-在React中正常的使用React的方式向Vue组件传递属性和children
+## パス属性（アトリビュートパス）  
+Reactで通常のReactの方法と同じように、Vueのコンポーネントに対してプロパティとchildrenを渡す
 ````jsx
 // React JSX File
 import React, { useState } from 'react'
@@ -137,16 +139,16 @@ export default function() {
     
   const [type, setType] = useState('primary')
   const [disabled, setDisabled] = useState(false)
-  const [content, setContent] = useState('提交')
+  const [content, setContent] = useState('提出')
     
   return <ElButtonGroup>
-    <ElButton type="danger" disabled>提交</ElButton>
-    <ElButton type={type} disabled={disabled}>提交</ElButton>
+    <ElButton type="danger" disabled>提出</ElButton>
+    <ElButton type={type} disabled={disabled}>提出</ElButton>
     <ElButton type="danger">{content}</ElButton>
   </ElButtonGroup>
 }
 ````  
-在Vue中正常的使用Vue的方式向React组件传递属性和插槽  
+VueでReactのコンポーネントに対してプロパティやslotを渡すのは、Vueを使った通常の方法と同じです。  
 ````vue
 <!--Vue File-->
 <template>
@@ -169,7 +171,7 @@ export default {
     }
   },
   components: {
-    // 使用applyReactInVue高阶组件将antd Popover转换成Vue组件
+    // applyReactInVue（HOC）でantd PopoverをVueコンポーネントに変換
     Popover: applyReactInVue(Popover)
   },
 }
@@ -179,13 +181,13 @@ export default {
 
 </style>
 ````  
-## 在React中使用Vue组件的v-model和sync修饰符
+## ReactでVueコンポーネントのv-modelとsync修飾子を使う
 ````jsx
 // React JSX File
 import React, { useState } from 'react'
 // element-ui DatePicker Vue
 import { DatePicker } from 'element-ui'
-// 一个开放sync修饰符属性的Vue组件
+// プロパティにsync修飾子を持つVueコンポーネント
 import VueComponent from './VueComponent.vue'
 import { applyVueInReact } from 'vuereact-combined'
 
@@ -195,12 +197,12 @@ const VueComponentInReact = applyVueInReact(VueComponent)
 export default function() {
   const [timeValue, setTimeValue] = useState(Date.now())
   const [timeValue1, setTimeValue1] = useState(Date.now())
-  // Vue组件的v-model在React中的用法
+  // ReactにおけるVueコンポーネントのv-modelの使用法
   const $model = {
     value: timeValue,
     setter: (val) => { setTimeValue(val) },
   }
-  // Vue组件的sync在React中的用法
+  // ReactでのVueコンポーネント同期の利用
   const $sync = {
     props1: {
       value: timeValue1,
@@ -208,72 +210,72 @@ export default function() {
     }
   }
   return <div>
-    <ElDatePicker $model={$model} type="date" placeholder="选择日期"/>
+    <ElDatePicker $model={$model} type="date" placeholder="日付を選択"/>
     <VueComponentInReact $sync={$sync} />
   </div>
 }
 ````  
-使用`$model`属性传递一个对象  
+`$model`を使ったオプジェクトの受け渡し  
 `$model`  
 **Type:** `{value: state, setter: (val: nextState) => void}`  
-其中`value`就是要传入给v-model的状态值，`setter`就是子组件向父组件发出修改状态值的触发函数，这个函数应该是个纯函数，不应该包含其他逻辑，确保函数内容仅仅只用于修改状态值  
+`value`はv-modelに渡される値の状態，`setter`は値の状態を変更するために子コンポーネントから親コンポーネントに送られるトリガー関数である。  
 `$sync`  
 **Type:** `{[propName: {value: state, setter: (val: nextState) => void}]}`  
 
-## 在React中使用Vue组件的作用域插槽和具名插槽  
+## ReactでVueのコンポーネントを使うためのScoped slotと名前付きslot  
 ```jsx
 // React JSX File
 import React, { useState } from 'react'
-// 一个开放具名插槽和作用域插槽的vue组件
+// Scoped slotと名前付きslotをプロパティに持つVueコンポーネント
 import VueComponent from './VueComponent.vue'
 import { applyVueInReact } from 'vuereact-combined'
 
 const VueComponentInReact = applyVueInReact(VueComponent)
 export default function() {
-  // 具名插槽
+  // 名前つきslot
   const $slots = {
-      slotA: <div>具名插槽A</div>,
-      slotB: <div>具名插槽B</div>
+      slotA: <div>名前つきslotA</div>,
+      slotB: <div>名前つきslotB</div>
   }
-  // 作用域插槽
+  // Scoped slot
   const $scopedSlots = {
-      slotC: (context) => <div>我是作用域插槽C：{context.value}</div>
+      slotC: (context) => <div>Scoped slotC：{context.value}</div>
   }
   return <div>
     <VueComponentInReact $slots={$slots} $scopedSlots={$scopedSlots}>
-      <h1>我是普通的插槽</h1>
+      <h1>私は普通のslotです。</h1>
     </VueComponentInReact>
   </div>
 }
 ```  
-`$slots` 具名插槽属性  
+`$slots` 名前付きslotのプロパティ
 **Type:** {[slotName: string]: ReactNode}  
-`$scopedSlots` 作用域插槽属性  
+`$scopedSlots` Scoped slotのプロパティ  
 **Type:** {[slotName: string]: (context: RenderPropsContext) => ReactElement | ReactComponent}  
-## 在Vue组件中向React组件传递ReactNode类型的属性和renderProps类型的属性  
+## VueコンポーネントでReactNode型プロパティとrenderProps型プロパティをReactコンポーネントに渡す  
 ```vue
 <!--Vue File-->
 <template>
   <ReactComponentInVue>
-    我是普通children
-    <!--  等同于向react组件传入 slotA={<span>我是ReactNode类型的slotA属性</span>}  -->
+    通常のchildren
+    <!--  Reactコンポーネントの場合 slotA={<span>私はslotAプロパティを持つReactNode型です</span>}   -->
     <template v-slot:slotA>
-      <span>我是ReactNode类型的slotA属性</span>
+      <span>私はslotAプロパティを持つReactNode型です</span>
     </template>
-    <!--  等同于向react组件传入 slotB={<span>我是ReactNode类型的slotA属性</span>}  -->
+    <!--  Reactコンポーネントの場合 slotB={<span>私はslotBプロパティを持つReactNode型です</span>}  -->
     <template v-slot:slotB>
-      <span>我是ReactNode类型的slotB属性</span>
+      <span>私はslotBプロパティを持つReactNode型です</span>
     </template>
-    <!--  等同于向react组件传入 slotC={(context) => <span>我是renderProps类型：{{context.value}}</span>}  -->
+    <!--  Reactコンポーネントの場合 slotC={(context) => <span>私はrenderProps型です：{{context.value}}</span>}  -->
     <template v-slot:slotC="context">
-      <span>我是renderProps类型：{{context.value}}</span>
+      <span>私はrenderProps型です：{{context.value}}</span>
     </template>
   </ReactComponentInVue>
 </template>
 
 <script>
 import { applyReactInVue } from 'vuereact-combined'
-// 一个开放ReactNode类型属性和renderProps类型属性的React组件
+// ReactNode型プロパティとrenderProps型プロパティを持つReactコンポーネント
 import ReactComponent from './ReactComponent'
 export default {
   components: {
@@ -282,14 +284,16 @@ export default {
 }
 </script>
 ```  
-applyReactInVue会将ReactNode类型的属性转会为Vue的具名插槽，将renderProps类型的属性转换为作用域插槽，具名插槽和作用域插槽的插槽名就是属性名  
-## 在Vue组件中调用React组件的Context/Provider  
+applyReactInVueは、ReactNode型のプロパティをVueの名前付きスロットに変換。
+renderProps型のプロパティをスコープスロットに変換。
+名前付きslotとScoped slotは、スロット名がプロパティ名となります。  
+## VueコンポーネントでReactコンポーネントのContext/Providerを呼び出す  
 ```vue
 <!--Vue File-->
 <template>
   <MyProvider :value="content">
-    <Button>Vue按钮</Button>
-    <!--  React组件中可以正常的使用Consumer消费Context  -->
+    <Button>Vueのボタン</Button>
+    <!--  ReactコンポーネントはContextを通常通り使用することができます  -->
     <ReactComponentInVue/>
   </MyProvider>
 </template>
@@ -309,14 +313,14 @@ export default {
   components: {
     Button,
     ReactComponentInVue: applyReactInVue(ReactComponent),
-    // 把Provider当作React组件直接转换
+    // ProviderをReactコンポーネントとして変換
     MyProvider: applyReactInVue(MyContext.Provider),
   }
 }
 </script>
 ```  
-## VueContainer，在React组件中使用Vue的动态组件  
-VueContainer是一个高阶组件，通过component属性直接渲染Vue组件  
+## VueContainer，ReactのコンポーネントでVueの動的コンポーネントを利用する  
+VueContainerは、Vueコンポーネントをcomponentプロパティで直接レンダリングするHOCです。  
 ```jsx
 // React JSX File
 import React, { useState, useEffect } from 'react'
@@ -330,7 +334,7 @@ const ElButtonGroup = applyVueInReact(ButtonGroup)
 export default function() {
   const [vueComponent, setVueComponent] = useState(VueComponent1)
   useEffect(() => {
-    // 3秒之后换成VueComponent2组件
+    // 3秒後にVueComponent2に切り替わる
     setTimeout(() => {
       setVueComponent(VueComponent2)
     }, 3000)
@@ -339,18 +343,18 @@ export default function() {
   const prop2 = '属性2'
   return <div>
       <VueContainer component={vueComponent} prop1={prop1} prop2={prop2}/>
-      {/* component属性为string类型时，表示使用vue的全局组件，以下的例子表示在react组件中使用vue-router的<router-view/> */}
+      {/* component属性は、vueのグローバルコンポーネントの使用を示すstring型であり、次の例は、reactコンポーネントでvue-routerを使用することを示した例です。<router-view/> */}
       <VueContainer component="RouterView"/>
   </div>
 }
 ```  
 
-## 在React组件中使用Vue组件的事件  
-注意：这里没有使用onEvent的属性传递方法，因为无法排除vue组件有属性与此种用法重名的可能  
+## ReactコンポーネントでVueコンポーネントのイベントを利用する  
+注意：onEventプロパティ受け渡しメソッドは、リネームされるプロパティを持っている可能性が否定できないため、ここでは使用しません。  
 ```jsx
 // React JSX File
 import React, { useState } from 'react'
-// 一个开放了某些事件的Vue组件
+// 特定のイベントが開かれているVueコンポーネント
 import VueComponent from './VueComponent.vue'
 import { applyVueInReact } from 'vuereact-combined'
 
@@ -366,8 +370,8 @@ export default function() {
     const customEvent = () => {
         console.log('mouseEnter')
     }
-    // 通过on属性传递将事件所对应的函数传递给vue组件
-    // 以下的代码等于同于vue中v-on="{click, mouseEnter, customEvent}"
+    // イベントに対応する関数をv-onプロパティでvueコンポーネントに渡す
+    // 以下のコードは、vueのv-onと同じです。 v-on="{click, mouseEnter, customEvent}"
     return <VueComponentInReact on={{click, mouseEnter, customEvent}}/>
 }
 ```  
