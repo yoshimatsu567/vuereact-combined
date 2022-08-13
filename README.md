@@ -26,10 +26,10 @@ npm i vuereact-combined -S
 + vueとreact、両者の本質を理解できるようにし、チームのフロントエンド技術スタックの幅を広げることを促進する  
 + 非常に使いやすい  
 ## Benchmark
-VueとReactを融合するアイデアはvueraのおかげである。
-しかし、vueraは非常に基本的なコンポーネントの融合しか解決できていなかった。
-slot（子）やデータ変更時のレンダリングパフォーマンスに問題があり、複雑なシナリオや本番環境では使用できなかった。
-vuereact-combinedは融合を極限まで進め、VueとReactコンポーネントのほとんどの機能をサポートし、vueraとは異なるアプローチでレンダリングの更新を行い、レンダリング性能の問題を完璧に解決している。
+VueとReactを融合するアイデアはvueraのおかげである。  
+しかし、vueraは非常に基本的なコンポーネントの融合しか解決できていなかった。  
+slot（子）やデータ変更時のレンダリングパフォーマンスに問題があり、複雑なシナリオや本番環境では使用できなかった。  
+vuereact-combinedは融合を極限まで進め、VueとReactコンポーネントのほとんどの機能をサポートし、vueraとは異なるアプローチでレンダリングの更新を行い、レンダリング性能の問題を完璧に解決している。  
 
 シーン／機能 | vuereact-combined | vuera |  
 | --------- | --------- | --------- |
@@ -110,13 +110,13 @@ export default function() {
 ## 利用シーン
 最も基本的なレベルでは、少なくとも `vue@^2.6`, `react@^16.3`, `react-dom@^16.3` がプロジェクトに存在する必要があります。  
 ### サードパーティのReactコンポーネントをVueのプロジェクトで使用する  
-サードパーティのreactコンポーネントは、すでに `babel` で処理されており、Reactの `jsx` は含まれていません。 
+サードパーティのreactコンポーネントは、すでに `babel` で処理されており、Reactの `jsx` は含まれていません。   
 そのため、applyReactInVueを使用して、サードパーティ製のReactコンポーネントをプロジェクト内で直接処理することができます。
 ### ReactプロジェクトでサードパーティのVueコンポーネントを使用する。  
-Reactの場合と同じく、サードパーティのVueコンポーネントは、すでに `vue-loader` と `babel` で処理されていて、 `.vue` ファイルやVueの `jsx` は含まれていません。 
-そのため、サードパーティのVueコンポーネントは、applyVueInReactを使用してプロジェクト内で直接処理することができます。  
+Reactの場合と同じく、サードパーティのVueコンポーネントは、すでに `vue-loader` と `babel` で処理されていて、 `.vue` ファイルやVueの `jsx` は含まれていません。   
+そのため、サードパーティのVueコンポーネントは、applyVueInReactを使用してプロジェクト内で直接処理することができます。    
 ### 複雑なケース（プロジェクトにreactとvueの両方の環境がインストールされ、設定されている場合） 
-この場合、ReactとVueの両方のコンポーネントコードを単一のプロジェクトで開発・記述できます。 両方の技術スタックが依存する環境を用意する必要があるため、プロジェクトのビルド（通常は `webpack`）と `babel.config.js` の設定をいくつか変更する必要があります。 
+この場合、ReactとVueの両方のコンポーネントコードを単一のプロジェクトで開発・記述できます。 両方の技術スタックが依存する環境を用意する必要があるため、プロジェクトのビルド（通常は `webpack`）と   `babel.config.js` の設定をいくつか変更する必要があります。 
 以下の例を参考にしてください。   
 + プロジェクトが vue-cli3 で作成された場合  
 https://github.com/devilwjp/vuereact-for-vuecli3-demo
@@ -640,47 +640,47 @@ const originOptions = {
     }
 }
 ```  
-## 支持程度  
-#### 在react组件中引入vue组件  
-功能 | 支持程度 |  说明  
+## 対応レベル  
+#### react componentsにvue componentsを導入  
+特徴｜サポート｜説明  
 -|-|-  
-普通属性 | 完全支持 |  |  
-html片段属性 | 变向支持 | 通过$slots，在vue中使用具名插槽获取 | 
-render props | 变向支持 | 通过$scopedSlots，在vue中使用作用域插槽获取 |  
-children(普通插槽) | 完全支持 |  |  
-组件合成事件 | 完全支持 | 通过on属性 |  
-组件原生事件(.native) | 不支持 | react没有这种感念，可以自己包囊div |  
-v-model | 变向支持 | 通过$model，并且支持vue组件中随意自定义model属性 |   
-html片段中使用react或者vue组件 | 完全支持 | react组件直接传入，vue组件继续通过applyVueInReact转换 |  
-懒加载vue组件 | 完全支持 | 通过lazyVueInReact |  
-redux共享 | 完全支持 | 使用applyRedux |  
-mobx共享 | 变向支持 | mobx本身就有react和vue的连接方式 |  
-vuex共享 | 完全支持 | 使用applyVuex |  
-sync装饰 | 变向支持 | 使用$sync |  
-事件修饰(key.enter、click.once) | 不支持 | 自行处理 |  
-透传 | 变向支持 | 使用data-passed-props |  
-ref | 变向支持 | ref首先会返回包囊实例的，在包囊实例中的属性vueRef可以获取倒vue组件实例 |  
-react router(在vue组件中) | 完全支持 | 使用applyReactRouterInVue |  
-判断自身是否被转化 | 完全支持 | 通过props属性data-passed-props或者实例属性reactWrapperRef |  
+通常属性 | 完全対応 |  |  
+html フラグメント属性 | 方向転換したサポート | vueの名前付slotを使って、$slotで取得する。 | 
+render props | 方向転換したサポート | vueのScoped Slotを使って，$scopedSlotsで取得する |  
+children(通常のスロット) | 完全対応 |  |  
+コンポーネントの合成イベント | 完全対応 | on属性によって。 |  
+コンポーネントのネイティブイベント(.native) | 未対応 | reactは、自らをカプセル化することができる。 |  
+v-model | 方向転換したサポート | model を渡し、vue コンポーネントのv-model プロパティの任意のカスタマイズをサポートします。 |   
+html snippetsでreactやvueのコンポーネントを使用す | 完全対応 | reactコンポーネントは直接渡すことができ、vueコンポーネントはapplyVueInReactで変換されます。 |  
+vueコンポーネントをlazyロードする | 完全対応 | lazyVueInReactを使用 |  
+redux | 完全対応 | applyReduxを使用 |  
+mobx | 方向転換したサポート | mobxはreactとvueを独自の方法で接続している |  
+vuex | 完全対応 | applyVuexを使用 |  
+sync修飾子 | 方向転換したサポート | $syncを使用 |  
+イベント修飾子(key.enter、click.once) | 未対応 | 自己処理 |  
+トランスミッション | 方向転換したサポート | data-passed-propsを使用 |  
+ref | 方向転換したサポート | refはまずカプセルインスタンスを返し、カプセルインスタンスのvueRef属性は反転したVueコンポーネントインスタンスを取得する |  
+react router(vueコンポーネントの中) | 完全対応 | applyReactRouterInVueを使用 |  
+変換されたかどうかの判定 | 完全対応 | props属性 data-passed-props または instance 属性 reactWrapperRef を介して。 |  
 
-#### 在vue组件中引入react组件  
-功能 | 支持程度 |  说明  
+#### vueコンポーネントにreactコンポーネントを導入する  
+特徴｜サポート｜説明  
 -|-|-  
-普通属性 | 完全支持 |  |  
-具名插槽 | 完全支持 | 在react中使用属性获取 | 
-作用域插槽 | 完全支持 | 在react中使用属性获取，类型是个函数 |  
-普通插槽 | 完全支持 |  |  
-组件合成事件 | 完全支持 | 在react中使用属性获取 |  
-组件原生事件(.native) | 暂不支持 |  |  
-v-model | 不支持 | react组件没有这个概念 |  
-provider/inject传入react | 暂不支持 | 未来会支持 |  
-sync装饰 | 不支持 | react组件没有这个概念 |  
-redux共享 | 完全支持 | 使用applyRedux |  
-mobx共享 | 变向支持 | mobx本身就有react和vue的连接方式 |  
-vuex共享 | 完全支持 | 使用applyVuex |  
-事件修饰(key.enter、click.once) | 不支持 | react组件没有这个概念 |  
-懒加载react组件 | 完全支持 | 通过lazyReactInVue |  
-透传 | 变向支持 | 使用data-passed-props |  
-ref | 变向支持 | ref首先会返回包囊实例的，在包囊实例中的属性reactRef可以获取倒react组件实例 |  
-vue router(在react组件中) | 完全支持 | 使用withVueRouter |  
-判断自身是否被转化 | 完全支持 | 通过props属性data-passed-props或者实例属性vueWrapperRef |    
+通常属性 | 完全対応 |  |  
+名前付きslot | 完全対応 | reactのプロパティを利用 | 
+Scoped slot | 完全対応 | reactでpropertyを使って取得、typeは関数 |  
+通常のslot | 完全対応 |  |  
+コンポーネントの合成イベント | 完全対応 | reactのプロパティを利用 |  
+コンポーネントのネイティブイベント(.native) | 現時点では未対応 |  |  
+v-model | 未対応 | reactコンポーネントにはこの概念がない |  
+provider/inject | 現時点では未対応 | 将来的にサポートする予定 |  
+sync修飾子 | 未対応 | reactコンポーネントにはこの概念がない |  
+redux | 完全対応 | applyReduxを使用する |  
+mobx | 方向転換したサポート | mobxはreactとvueを独自の方法で接続している |  
+vuex | 完全対応 | applyVuexを使用する |  
+イベント修飾子(key.enter、click.once) | 未対応 | reactコンポーネントにはこの概念がない |  
+reactコンポーネントのlazyローディング | 完全対応 | lazyReactInVueを使用 |  
+トランスミッション | 方向転換したサポート | data-passed-propsを使用 |  
+ref | 方向転換したサポート | refはまずカプセルインスタンスを返し、カプセルインスタンスのproperty reactRefはその逆のリアクトコンポーネントインスタンスを取得します。 |  
+vue router(reactコンポーネントの中) | 完全対応 | withVueRouterを使用 |  
+変換されたかどうかの判定 | 完全対応 | props 属性 data-passed-props またはインスタンス属性 vueWrapperRef を使用 |    
