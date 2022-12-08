@@ -1,7 +1,10 @@
 import React, { version } from "react"
-import ReactDOM from "react-dom"
 import applyVueInReact, { VueContainer } from "./applyVueInReact"
 import options, { setOptions } from "./options"
+import { createPortal } from "react-dom"
+import ReactDOM from 'react-dom'
+
+const ReactMajorVersion = parseInt(version)
 
 // vueRootInfo是为了保存vue的root节点options部分信息，现在保存router、store，在applyVueInReact方法中创建vue的中间件实例时会被设置
 // 为了使applyReactInVue -> applyVueInReact之后的vue组件依旧能引用vuex和vue router
@@ -141,11 +144,11 @@ const createReactContainer = (Component, options, wrapInstance) => class applyRe
 
   render() {
     let {
-      children,
       "data-passed-props": __passedProps,
       hashList,
       ...props
     } = this.state
+    let children
     // 保留一份作用域和具名插槽，用于之后再透传给vue组件
     const $slots = {}
     const $scopedSlots = {}
@@ -161,11 +164,20 @@ const createReactContainer = (Component, options, wrapInstance) => class applyRe
           if (options.defaultSlotsFormatter) {
             props[i].__top__ = this.vueWrapperRef
             props[i] = options.defaultSlotsFormatter(props[i], this.vueInReactCall, hashList)
-            if (props[i] instanceof Array || (typeof props[i]).indexOf("string", "number") > -1) {
-              props[i] = [...props[i]]
-            } else if (typeof props[i] === "object") {
-              props[i] = { ...props[i] }
+            function cloneChildren() {
+              if (props[i] instanceof Array) {
+                props[i] = [...props[i]]
+                return
+              }
+              if (["string", "number"].indexOf(typeof props[i]) > -1) {
+                props[i] = [props[i]]
+                return
+              }
+              if (typeof props[i] === "object") {
+                props[i] = { ...props[i] }
+              }
             }
+            cloneChildren()
           } else {
             props[i] = { ...applyVueInReact(this.createSlot(props[i]), { ...options, isSlots: true, wrapInstance }).render() }
           }
@@ -174,41 +186,17 @@ const createReactContainer = (Component, options, wrapInstance) => class applyRe
           props[i] = props[i].reactSlot
         }
         $slots[i] = props[i]
-      } else if (props[i].__scopedSlot) {
+        continue
+      }
+      if (props[i].__scopedSlot) {
         // 作用域插槽是个纯函数，在react组件中需要传入作用域调用，然后再创建vue的插槽组件
         props[i] = props[i](this.createSlot)
         $scopedSlots[i] = props[i]
       }
     }
     // 普通插槽
-    if (children != null) {
-      if (!children.reactSlot) {
-        const vueSlot = children
-        // 自定义插槽处理
-        if (options.defaultSlotsFormatter) {
-          children.__top__ = this.vueWrapperRef
-          children = options.defaultSlotsFormatter(children, this.vueInReactCall, hashList)
-          function cloneChildren() {
-            if (children instanceof Array) {
-              children = [...children]
-              return
-            }
-            if (["string", "number"].indexOf(typeof children) > -1) {
-              children = [children]
-              return
-            }
-            if (typeof children === "object") {
-              children = { ...children }
-            }
-          }
-          cloneChildren()
-        } else {
-          children = { ...applyVueInReact(this.createSlot(children), { ...options, isSlots: true, wrapInstance }).render() }
-        }
-        children.vueSlot = vueSlot
-      } else {
-        children = children.reactSlot
-      }
+    if (!props.children?.vueFunction) {
+      children = props.children
     }
     $slots.default = children
     // 封装透传属性
@@ -230,11 +218,11 @@ const createReactContainer = (Component, options, wrapInstance) => class applyRe
       return (
         <Component {...newProps}
                    {...{ "data-passed-props": __passedProps }} {...refInfo}>
-          {children}
+          {children || newProps.children}
         </Component>
       )
     }
-    return <FunctionComponentWrap passedProps={newProps} component={Component} {...refInfo}>{children}</FunctionComponentWrap>
+    return <FunctionComponentWrap passedProps={newProps} component={Component} {...refInfo}>{children || newProps.children}</FunctionComponentWrap>
   }
 }
 export default function applyReactInVue(component, options = {}) {
@@ -588,7 +576,7 @@ export default function applyReactInVue(component, options = {}) {
             // 存储包囊层引用
             this.parentReactWrapperRef = reactWrapperRef
             // 存储portal引用
-            this.reactPortal = () => ReactDOM.createPortal(
+            this.reactPortal = () => createPortal(
               reactRootComponent,
               container,
             )
@@ -596,6 +584,15 @@ export default function applyReactInVue(component, options = {}) {
             return
           }
 
+          if (ReactMajorVersion > 17) {
+            // I'm not afraid of being fired
+            if (ReactDOM.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED !== undefined) {
+              ReactDOM.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.usingClientEntryPoint = true
+            }
+            this.__veauryReactApp__ = ReactDOM.createRoot(container)
+            this.__veauryReactApp__.render(reactRootComponent)
+            return
+          }
           const reactInstance = ReactDOM.render(
             reactRootComponent,
             container,
@@ -694,7 +691,11 @@ export default function applyReactInVue(component, options = {}) {
       // 删除根节点
       // 骚操作，覆盖原生dom查找dom的一些方法，使react在vue组件销毁前仍然可以查到dom
       overwriteDomMethods(this.$refs.react)
-      ReactDOM.unmountComponentAtNode(this.$refs.react)
+      if (ReactMajorVersion > 17) {
+        this.__veauryReactApp__.unmount()
+      } else {
+        ReactDOM.unmountComponentAtNode(this.$refs.react)
+      }
       // 恢复原生方法
       recoverDomMethods()
     },
